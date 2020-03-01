@@ -1,4 +1,5 @@
-# name-generate
+# NameGator
+Um gerador de nomes utlizando Vue.js, GraphQL e Node
 
 ## Project setup
 ```
