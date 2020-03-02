@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md">
-                        <h5>Prefixos <span class="badge badge-info">0</span></h5>
+                        <h5>Prefixos <span class="badge badge-info">{{prefixes.length}}</span></h5>
                         <div class="card">
                             <div class="card-body">
                                 <ul class="list-group">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="col-md">
-                        <h5>Sufixos <span class="badge badge-info">0</span></h5>
+                        <h5>Sufixos <span class="badge badge-info">{{sufixes.length}}</span></h5>
                         <div class="card">
                             <div class="card-body">
                                 <ul class="list-group">
@@ -54,31 +54,31 @@
 </template>
 
 <script>
-import "bootstrap/dist/css/bootstrap.css"
-import "font-awesome/css/font-awesome.css"
+import "bootstrap/dist/css/bootstrap.css";
+import "font-awesome/css/font-awesome.css";
 
 export default {
-    name: 'App',
-    data: function(){
-        return {
-            prefixes: ['Air', 'Jet', 'Flight'],
-            sufixes: ['Hub', 'Station', 'Mart'],
-        }
-    },
-    computed: {
-        domains(){
-            let domains = [];
+	name: "App",
+	data: function(){
+		return {
+			prefixes: ["Air", "Jet", "Flight"],
+			sufixes: ["Hub", "Station", "Mart"],
+		};
+	},
+	computed: {
+		domains(){
+			let domains = [];
 
-            this.prefixes.forEach(prefix => {
-                this.sufixes.forEach(sufix => { 
-                    domains.push(prefix + sufix);
-                });
-            });
+			this.prefixes.forEach(prefix => {
+				this.sufixes.forEach(sufix => { 
+					domains.push(prefix + sufix);
+				});
+			});
 
-            return domains; 
-        }
-    }
-}
+			return domains; 
+		}
+	}
+};
 </script>
 
 <style>
