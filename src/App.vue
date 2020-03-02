@@ -14,11 +14,23 @@
                             <div class="card-body">
                                 <ul class="list-group">
                                     <li v-for="prefix in prefixes" :key="prefix" class="list-group-item">
-                                        {{prefix}}
-                                    </li>
+										<div class="row">
+											<div class="col-md">
+												{{prefix}}
+											</div>
+											<div class="col-md text-right">
+												<button class="btn btn-info" @click="deletePrefix(prefix)"><span class="fa fa-trash"></span></button>
+											</div>
+										</div>
+									</li>
                                 </ul>
                                 <br>
-                                <input class="form-control" type="text">
+								<div class="input-group">
+									<input type="text" class="form-control" @keyup.enter="addPrefix(prefix)" v-model="prefix" placeholder="Digite o prefixo">
+									<div class="input-group-append">
+										<button class="btn btn-info" @click="addPrefix(prefix)"><span class="fa fa-plus"></span></button>
+									</div>
+								</div>
                             </div>
                         </div>
                     </div>
@@ -28,11 +40,23 @@
                             <div class="card-body">
                                 <ul class="list-group">
                                     <li v-for="sufix in sufixes" :key="sufix" class="list-group-item">
-                                        {{sufix}}
+                                        <div class="row">
+											<div class="col-md">
+												{{sufix}}
+											</div>
+											<div class="col-md text-right">
+												<button class="btn btn-info" @click="deleteSufix(sufix)"><span class="fa fa-trash"></span></button>
+											</div>
+										</div>
                                     </li>
                                 </ul>
                                 <br>
-                                <input class="form-control" type="text">
+								<div class="input-group">
+									<input type="text" class="form-control" @keyup.enter="addSufix(sufix)" v-model="sufix" placeholder="Digite o sufixo">
+									<div class="input-group-append">
+										<button class="btn btn-info" @click="addSufix(sufix)"><span class="fa fa-plus"></span></button>
+									</div>
+								</div>
                             </div>
                         </div>
                     </div>
@@ -63,19 +87,37 @@ export default {
 		return {
 			prefixes: ["Air", "Jet", "Flight"],
 			sufixes: ["Hub", "Station", "Mart"],
+			prefix: "",
+			sufix: "",
 		};
 	},
 	computed: {
 		domains(){
 			let domains = [];
 
-			this.prefixes.forEach(prefix => {
-				this.sufixes.forEach(sufix => { 
+			for(const prefix of this.prefixes){
+				for(const sufix of this.sufixes){
 					domains.push(prefix + sufix);
-				});
-			});
+				}
+			}
 
 			return domains; 
+		}
+	},
+	methods: {
+		addPrefix: function(prefix){
+			this.prefixes.push(prefix);
+			this.prefix = "";
+		},
+		addSufix: function(sufix){
+			this.sufixes.push(sufix);
+			this.sufix = "";
+		},
+		deletePrefix: function(prefix){
+			this.prefixes.splice(this.prefixes.indexOf(prefix), 1);
+		},
+		deleteSufix: function(sufix){
+			this.sufixes.splice(this.prefixes.indexOf(sufix), 1);
 		}
 	}
 };
