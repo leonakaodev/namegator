@@ -69,6 +69,7 @@ export default {
 
 
 #main {
+	background-color: #E7E7E7;
     padding-top: 30px;
     padding-bottom: 30px;
 }
