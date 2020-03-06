@@ -14,7 +14,7 @@
             <div class="card">
                 <div class="card-body">
                     <ul class="list-group">
-                        <li v-for="domain in domains" :key="domain" class="list-group-item">
+                        <li v-for="domain in domains" :key="domain.nome" class="list-group-item">
                             <div class="row">
                                 <div class="col-md">
                                     {{ domain.name }}
@@ -34,16 +34,15 @@
 </template>
 
 <script>
-import "bootstrap/dist/css/bootstrap.css";
-import "font-awesome/css/font-awesome.css";
 import AppItemList from "./AppItemList";
+import axios from "axios/dist/axios";
 
 export default {
 	name: "DomainList",
 	data: function(){
 		return {
-			prefixes: ["Air", "Jet", "Flight"],
-			sufixes: ["Hub", "Station", "Mart"],
+			prefixes: [],
+			sufixes: [],
 		};
 	},
 	components: {
@@ -81,6 +80,36 @@ export default {
 		deleteSufix: function(sufix){
 			this.sufixes.splice(this.prefixes.indexOf(sufix), 1);
 		}
+	},
+	async created(){
+		const response = await axios({
+			url: "http://localhost:4000",
+			method: "post",
+			data: {
+				query: `
+					{
+						prefixes: items(type: "prefix") {
+							description
+						}
+						sufixes: items (type: "sufix") {
+							description
+						}
+					}
+				`
+			}
+		});
+
+		const query = response.data;
+		this.prefixes = query.data.prefixes.map(prefix => prefix.description);
+		this.sufixes = query.data.sufixes.map(sufix => sufix.description);
 	}
 };
 </script>
+
+<style>
+#main {
+	background-color: #E7E7E7;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+</style>

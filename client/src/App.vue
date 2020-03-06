@@ -66,11 +66,4 @@ export default {
     margin-top: 30px;
     margin-bottom: 30px;
 }
-
-
-#main {
-	background-color: #E7E7E7;
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
 </style>
