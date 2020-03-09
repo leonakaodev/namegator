@@ -16,12 +16,6 @@ import DomainList from "./components/DomainList";
 
 export default {
 	name: "App",
-	data: function(){
-		return {
-			prefixes: ["Air", "Jet", "Flight"],
-			sufixes: ["Hub", "Station", "Mart"],
-		};
-	},
 	components: {
 		DomainList
 	},
@@ -42,20 +36,6 @@ export default {
 			}
 
 			return domains; 
-		}
-	},
-	methods: {
-		addPrefix: function(prefix){
-			this.prefixes.push(prefix);
-		},
-		addSufix: function(sufix){
-			this.sufixes.push(sufix);
-		},
-		deletePrefix: function(prefix){
-			this.prefixes.splice(this.prefixes.indexOf(prefix), 1);
-		},
-		deleteSufix: function(sufix){
-			this.sufixes.splice(this.prefixes.indexOf(sufix), 1);
 		}
 	}
 };
