@@ -16,10 +16,13 @@
                     <ul class="list-group">
                         <li v-for="domain in domains" :key="domain.nome" class="list-group-item">
                             <div class="row">
-                                <div class="col-md">
+                                <div class="col-md-6">
                                     {{ domain.name }}
                                 </div>
-                                <div class="col-md text-right">
+								<div class="col-md-3">
+									<span class="badge badge-info">{{ domain.available ? "Disponível" : "Indisponível" }}</span>
+								</div>
+                                <div class="col-md-3 text-right">
                                     <a class="btn btn-info" :href="domain.checkout" target="blank">
                                         <span class="fa fa-shopping-cart"></span>
                                     </a>
@@ -44,30 +47,12 @@ export default {
 			items: {
 				prefix: [],
 				sufix:[],
-			}
+			},
+			domains: [],
 		};
 	},
 	components: {
 		AppItemList
-	},
-	computed: {
-		domains(){
-			let domains = [];
-
-			for(const prefix of this.items.prefix){
-				for(const sufix of this.items.sufix){
-					const name = prefix.description+sufix.description;
-					const url = name.toLowerCase();
-					const checkout = `https://checkout.hostgator.com.br/?a=add&sld=${url}&tld=.com.br`;
-					domains.push({
-						name,
-						checkout
-					});
-				}
-			}
-
-			return domains; 
-		}
 	},
 	methods: {
 		addItem: function(item){
@@ -90,6 +75,7 @@ export default {
 				}
 			}).then(response => {
 				this.items[item.type].push(response.data.data.newItem);
+				this.generateDomains();
 			});
 		},
 		deleteItem: function(item){
@@ -110,11 +96,12 @@ export default {
 				const query = response.data;
 				if(query.data.deleted){
 					this.items[item.type].splice(this.items[item.type].indexOf(item), 1);
+					this.generateDomains();
 				}
 			});
 		},
 		getItems(type){
-			axios({
+			return axios({
 				url: "http://localhost:4000",
 				method: "post",
 				data: {
@@ -135,11 +122,35 @@ export default {
 				const query = response.data;
 				this.items[type] = query.data.items;
 			});
+		},
+		generateDomains(){
+			axios({
+				url: "http://localhost:4000",
+				method: "post",
+				data: {
+					query: `
+						mutation {
+							domains: generateDomains {
+								name
+								checkout
+								available
+							}
+						}
+					`
+				}
+			}).then(response => {
+				const query = response.data;
+				this.domains = query.data.domains;
+			});
 		}
 	},
-	async created(){
-		this.getItems("prefix");
-		this.getItems("sufix");
+	created(){
+		Promise.all([
+			this.getItems("prefix"),
+			this.getItems("sufix")
+		]).then(() => {
+			this.generateDomains();
+		});
 	}
 };
 </script>
